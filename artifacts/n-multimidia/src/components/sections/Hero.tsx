@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
       <div 
         className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat opacity-20"
         style={{ backgroundImage: 'url(/hero-bg.png)' }}
