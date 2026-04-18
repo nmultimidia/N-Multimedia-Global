@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "N Multimídia - Agência Digital Internacional"
+version = "1.0.0"
+id = "artifacts/n-multimidia"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23980
+
+[services.development]
+run = "pnpm --filter @workspace/n-multimidia run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/n-multimidia", "run", "build" ]
+publicDir = "artifacts/n-multimidia/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23980"
+BASE_PATH = "/"
