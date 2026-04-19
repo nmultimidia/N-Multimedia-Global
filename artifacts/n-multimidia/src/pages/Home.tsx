@@ -1,6 +1,7 @@
 import { Hero } from "@/components/sections/Hero";
 import { Problem } from "@/components/sections/Problem";
 import { Services } from "@/components/sections/Services";
+import { AISection } from "@/components/sections/AISection";
 import { Results } from "@/components/sections/Results";
 import { Iceberg } from "@/components/sections/Iceberg";
 import { ValorDeclaration } from "@/components/sections/ValorDeclaration";
@@ -16,6 +17,7 @@ export default function Home() {
       <Hero />
       <div id="servicos"><Problem /></div>
       <Services />
+      <AISection />
       <div id="resultados"><Results /></div>
       <Iceberg />
       <ValorDeclaration />

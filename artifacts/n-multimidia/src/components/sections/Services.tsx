@@ -3,34 +3,52 @@ import { MouseEvent, useRef, useState } from 'react';
 
 const services = [
   {
+    title: "Soluções de IA",
+    desc: "Automação inteligente, IA generativa e agentes que trabalham 24h pelo seu negócio.",
+    en: "INTELLIGENT AUTOMATION",
+    highlight: true
+  },
+  {
+    title: "Análise de Dados",
+    desc: "Business Intelligence, dashboards preditivos e decisões baseadas em dados reais.",
+    en: "PREDICTIVE ANALYTICS",
+    highlight: true
+  },
+  {
     title: "Performance Marketing",
     desc: "Crescimento escalável baseado em dados rígidos.",
-    en: "DATA-DRIVEN SCALE"
+    en: "DATA-DRIVEN SCALE",
+    highlight: false
   },
   {
     title: "Web Development",
     desc: "Plataformas digitais desenhadas para conversão extrema.",
-    en: "HIGH-CONVERSION ARCHITECTURE"
+    en: "HIGH-CONVERSION ARCHITECTURE",
+    highlight: false
   },
   {
     title: "Branding & Posicionamento",
     desc: "Construção de autoridade magnética e inevitável.",
-    en: "MAGNETIC AUTHORITY"
+    en: "MAGNETIC AUTHORITY",
+    highlight: false
   },
   {
     title: "Social Media",
     desc: "Distribuição de conteúdo que domina a atenção.",
-    en: "ATTENTION MONOPOLY"
+    en: "ATTENTION MONOPOLY",
+    highlight: false
   },
   {
     title: "Paid Ads",
     desc: "Aquisição de clientes com ROI previsível.",
-    en: "PREDICTABLE ACQUISITION"
+    en: "PREDICTABLE ACQUISITION",
+    highlight: false
   },
   {
     title: "Strategy & Consultoria",
     desc: "Engenharia de funil e design de ofertas irresistíveis.",
-    en: "OFFER ENGINEERING"
+    en: "OFFER ENGINEERING",
+    highlight: false
   }
 ];
 
@@ -70,11 +88,14 @@ function ServiceCard({ service, index }: { service: any, index: number }) {
         onMouseLeave={handleMouseLeave}
         animate={{ rotateX, rotateY }}
         transition={{ type: "spring", stiffness: 300, damping: 30, mass: 15 }}
-        className="h-full bg-card p-8 border border-white/5 hover:border-primary/50 transition-colors duration-300 flex flex-col justify-between group cursor-default relative overflow-hidden"
+        className={`h-full bg-card p-8 border transition-colors duration-300 flex flex-col justify-between group cursor-default relative overflow-hidden ${service.highlight ? 'border-primary/30 hover:border-primary/70' : 'border-white/5 hover:border-primary/50'}`}
       >
+        {service.highlight && (
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div>
-          <p className="text-xs font-mono text-primary/70 mb-4">{service.en}</p>
+          <p className={`text-xs font-mono mb-4 ${service.highlight ? 'text-primary' : 'text-primary/70'}`}>{service.en}</p>
           <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
           <p className="text-muted-foreground">{service.desc}</p>
         </div>
@@ -99,7 +120,7 @@ export function Services() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, idx) => (
             <ServiceCard key={idx} service={service} index={idx} />
           ))}
