@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
+import { useGeo } from '@/context/GeoContext';
 
 const navLinks = [
   { label: 'Serviços', href: '/#servicos' },
@@ -13,6 +14,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [location] = useLocation();
+  const { geo } = useGeo();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -75,7 +77,7 @@ export function Header() {
               onClick={() => handleSectionNav('contato')}
               className="text-sm font-mono font-bold tracking-widest uppercase px-6 py-2.5 bg-primary text-white hover:bg-primary/80 transition-colors"
             >
-              Diagnóstico Gratuito
+              {geo.header.cta}
             </button>
           </div>
 
@@ -133,7 +135,7 @@ export function Header() {
                 onClick={() => handleSectionNav('contato')}
                 className="text-sm font-mono font-bold tracking-widest uppercase px-6 py-3 bg-primary text-white hover:bg-primary/80 transition-colors w-full"
               >
-                Diagnóstico Gratuito
+                {geo.header.cta}
               </button>
             </div>
           </motion.div>

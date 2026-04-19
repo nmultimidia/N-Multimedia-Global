@@ -6,6 +6,8 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Carreira from "@/pages/Carreira";
 import { Header } from "@/components/sections/Header";
+import { GeoBanner } from "@/components/sections/GeoBanner";
+import { GeoProvider } from "@/context/GeoContext";
 
 const queryClient = new QueryClient();
 
@@ -23,11 +25,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Header />
-          <Router />
-        </WouterRouter>
-        <Toaster />
+        <GeoProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Header />
+            <GeoBanner />
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </GeoProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

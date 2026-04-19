@@ -1,16 +1,19 @@
 import { motion } from 'framer-motion';
 import { HeroScene } from '../3d/HeroScene';
 import { Button } from '@/components/ui/button';
+import { useGeo } from '@/context/GeoContext';
 
 export function Hero() {
+  const { geo } = useGeo();
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
-      <div 
+      <div
         className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat opacity-30"
         style={{ backgroundImage: 'url(/hero-crystal.png)' }}
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/10 via-background/50 to-background" />
-      
+
       <HeroScene />
 
       <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center">
@@ -36,14 +39,19 @@ export function Hero() {
             WE DON'T SELL MARKETING. WE SELL LEVERAGE.
           </h2>
           <h3 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 leading-tight">
-            Fazemos a oferta ser tão boa que você se sentiria <span className="text-gradient-primary italic">estúpido</span> em dizer não.
+            {geo.hero.tagline}{' '}
+            <span className="text-gradient-primary italic">{geo.hero.taglineHighlight}</span>{' '}
+            {geo.country === 'BR' ? 'em dizer não.' : ''}
           </h3>
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10">
-            A agência digital internacional que comanda presença, autoridade e resultados implacáveis.
+            {geo.hero.sub}
           </p>
-          
-          <Button size="lg" className="h-14 px-8 text-lg bg-white text-black hover:bg-white/90 rounded-none font-semibold uppercase tracking-wider transition-transform hover:scale-105 duration-300">
-            Iniciar Diagnóstico
+
+          <Button
+            size="lg"
+            className="h-14 px-8 text-lg bg-white text-black hover:bg-white/90 rounded-none font-semibold uppercase tracking-wider transition-transform hover:scale-105 duration-300"
+          >
+            {geo.hero.cta}
           </Button>
         </motion.div>
       </div>
