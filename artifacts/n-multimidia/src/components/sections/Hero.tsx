@@ -6,8 +6,8 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
       <div 
-        className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{ backgroundImage: 'url(/hero-bg.png)' }}
+        className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: 'url(/hero-crystal.png)' }}
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/10 via-background/50 to-background" />
       

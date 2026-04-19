@@ -190,6 +190,35 @@ export default function Carreira() {
         </div>
       </section>
 
+      <section className="relative h-[420px] overflow-hidden border-y border-white/5">
+        <motion.div
+          initial={{ scale: 1.05, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/team-photo.png)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/50 to-background/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/40" />
+        <div className="relative z-10 h-full flex items-center container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <p className="text-xs font-mono text-primary tracking-widest mb-4">O NOSSO TIME</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 max-w-lg">
+              Pessoas que entregam.<br />Não que aparecem.
+            </h2>
+            <p className="text-muted-foreground max-w-md">
+              100% remoto, 40+ países, uma única obsessão: resultados que importam para o cliente.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       <section className="py-28 bg-card/20 border-b border-white/5">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-start">

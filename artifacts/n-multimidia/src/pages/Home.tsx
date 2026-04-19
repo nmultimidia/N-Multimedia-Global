@@ -3,6 +3,7 @@ import { Problem } from "@/components/sections/Problem";
 import { Services } from "@/components/sections/Services";
 import { Results } from "@/components/sections/Results";
 import { Iceberg } from "@/components/sections/Iceberg";
+import { ValorDeclaration } from "@/components/sections/ValorDeclaration";
 import { BuyerJourney } from "@/components/sections/BuyerJourney";
 import { Process } from "@/components/sections/Process";
 import { Objections } from "@/components/sections/Objections";
@@ -17,6 +18,7 @@ export default function Home() {
       <Services />
       <div id="resultados"><Results /></div>
       <Iceberg />
+      <ValorDeclaration />
       <BuyerJourney />
       <div id="processo"><Process /></div>
       <Objections />

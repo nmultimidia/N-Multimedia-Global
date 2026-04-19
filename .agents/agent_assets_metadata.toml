@@ -6,3 +6,21 @@ id = "4j4CTwwKvVIWAJ7yOC9-Z"
 uri = "file://artifacts/n-multimidia/public/hero-bg.png"
 type = "image"
 title = "Abstract dark web3 geometry"
+
+[[generated]]
+id = "M-rPGF22VQBsu8RW6P57A"
+uri = "file://artifacts/n-multimidia/public/hero-crystal.png"
+type = "image"
+title = "hero crystal gem dark"
+
+[[generated]]
+id = "os8hrlp7U75GfU-GZiLDz"
+uri = "file://artifacts/n-multimidia/public/value-visual.png"
+type = "image"
+title = "value business abstract"
+
+[[generated]]
+id = "foNXjDw7AFWmQv7V65Iu8"
+uri = "file://artifacts/n-multimidia/public/team-photo.png"
+type = "image"
+title = "agency team dark office"
