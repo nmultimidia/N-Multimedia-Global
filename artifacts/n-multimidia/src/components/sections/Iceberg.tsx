@@ -18,7 +18,7 @@ const hidden = [
   'Automação com agentes de IA',
   'Segmentação comportamental',
   'Estrutura de retenção e upsell',
-  'Diagnóstico BANT pré-campanha',
+  'Diagnóstico estratégico pré-campanha',
   'Business Intelligence & dashboards',
   'Análise competitiva de mercado',
   'Framework de escalabilidade',

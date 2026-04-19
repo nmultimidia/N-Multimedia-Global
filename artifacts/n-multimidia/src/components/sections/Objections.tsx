@@ -4,7 +4,7 @@ import { useState } from 'react';
 const objections = [
   {
     q: '"Já contratei agência antes e não tive resultado."',
-    a: 'A maioria das agências vende horas de trabalho disfarçadas de estratégia. Nós vendemos sistemas. Antes de qualquer proposta, fazemos um diagnóstico BANT para entender exatamente o que está quebrando no seu funil. Se não conseguirmos provar valor no diagnóstico, encerramos a conversa ali — sem perda de tempo para nenhum dos dois lados.',
+    a: 'A maioria das agências vende horas de trabalho disfarçadas de estratégia. Nós vendemos sistemas. Antes de qualquer proposta, fazemos um diagnóstico estruturado para entender exatamente o que está quebrando no seu funil. Se não conseguirmos provar valor no diagnóstico, encerramos a conversa ali — sem perda de tempo para nenhum dos dois lados.',
     tag: 'OBJEÇÃO #1 / CONFIANÇA'
   },
   {
@@ -19,7 +19,7 @@ const objections = [
   },
   {
     q: '"Preciso pensar. Vou analisar com meu sócio."',
-    a: 'Respeitamos o processo decisório. Por isso nosso diagnóstico é feito com os decisores reais (a metodologia BANT existe para isso). Se quiser, agende uma call conjunta. O que não funciona: deixar a decisão para "depois" enquanto o mercado avança. Podemos reservar uma vaga para a próxima semana.',
+    a: 'Respeitamos o processo decisório. Por isso nosso diagnóstico é sempre conduzido diretamente com quem tem autoridade para decidir. Se quiser, agende uma call conjunta. O que não funciona: deixar a decisão para "depois" enquanto o mercado avança. Podemos reservar uma vaga para a próxima semana.',
     tag: 'OBJEÇÃO #4 / DECISÃO'
   },
   {

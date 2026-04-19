@@ -25,7 +25,7 @@ export function Footer() {
               {[
                 { label: 'Serviços', id: 'servicos' },
                 { label: 'Resultados', id: 'resultados' },
-                { label: 'Processo BANT', id: 'processo' },
+                { label: 'Nosso Processo', id: 'processo' },
                 { label: 'Contato', id: 'contato' },
               ].map((item) => (
                 <button

@@ -16,7 +16,7 @@ export function Contact() {
         >
           <h2 className="text-4xl md:text-6xl font-bold mb-6">Pronto para o <span className="text-gradient-primary">Próximo Nível?</span></h2>
           <p className="text-muted-foreground text-lg">
-            Preencha o formulário BANT. Nossa equipe avaliará sua elegibilidade.
+            Preencha o diagnóstico abaixo. Nossa equipe avaliará sua elegibilidade.
           </p>
         </motion.div>
 

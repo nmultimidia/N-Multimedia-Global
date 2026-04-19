@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 
 const steps = [
-  { id: "01", title: "Diagnóstico", desc: "Mapeamento cirúrgico de Budget e Necessidades reais. Se não fizermos sentido para você, diremos na primeira call.", tag: "BANT: BUDGET / NEED" },
-  { id: "02", title: "Estratégia", desc: "Arquitetura da solução e definição de Autoridade. Desenhamos o plano de ataque perfeito.", tag: "BANT: AUTHORITY" },
-  { id: "03", title: "Execução", desc: "Implementação implacável com prazos definidos. Velocidade é a nossa vantagem injusta.", tag: "BANT: TIMELINE" },
-  { id: "04", title: "Resultados", desc: "Otimização contínua e escalabilidade. O jogo nunca termina, ele apenas sobe de nível.", tag: "SCALING" },
+  { id: "01", title: "Diagnóstico", desc: "Mapeamento cirúrgico de orçamento e necessidades reais. Se não fizermos sentido para você, diremos na primeira call.", tag: "ORÇAMENTO & NECESSIDADE" },
+  { id: "02", title: "Estratégia", desc: "Arquitetura da solução e validação com quem decide. Desenhamos o plano de ataque perfeito.", tag: "DECISÃO & AUTORIDADE" },
+  { id: "03", title: "Execução", desc: "Implementação implacável com prazos definidos. Velocidade é a nossa vantagem injusta.", tag: "PRAZO & EXECUÇÃO" },
+  { id: "04", title: "Resultados", desc: "Otimização contínua e escalabilidade. O jogo nunca termina, ele apenas sobe de nível.", tag: "ESCALABILIDADE" },
 ];
 
 export function Process() {
@@ -12,7 +12,7 @@ export function Process() {
     <section className="py-32">
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Metodologia <span className="text-white/40">BANT</span></h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Nossa <span className="text-white/40">Metodologia</span></h2>
           <p className="text-muted-foreground text-lg">Um funil projetado para eliminar atritos e focar na execução pura.</p>
         </div>
 
