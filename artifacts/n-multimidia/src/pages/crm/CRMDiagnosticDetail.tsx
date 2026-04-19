@@ -1,0 +1,99 @@
+import { useEffect, useState } from "react";
+import { useParams, useLocation } from "wouter";
+import { CRMLayout } from "@/components/crm/CRMLayout";
+import { api } from "@/lib/api";
+
+const STATUS_OPTIONS = [
+  { value: "new", label: "Novo" },
+  { value: "contacted", label: "Contactado" },
+  { value: "qualified", label: "Qualificado" },
+  { value: "closed", label: "Encerrado" },
+];
+
+const STATUS_COLORS: Record<string, string> = {
+  new: "text-violet-400",
+  contacted: "text-blue-400",
+  qualified: "text-green-400",
+  closed: "text-white/30",
+};
+
+export default function CRMDiagnosticDetail() {
+  const { id } = useParams<{ id: string }>();
+  const [, navigate] = useLocation();
+  const [d, setD] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    api.getDiagnostic(Number(id)).then(setD).catch(console.error).finally(() => setLoading(false));
+  }, [id]);
+
+  const handleStatusChange = async (status: string) => {
+    setSaving(true);
+    try {
+      const updated = await api.updateDiagnosticStatus(Number(id), status);
+      setD(updated);
+    } catch (e) { console.error(e); }
+    finally { setSaving(false); }
+  };
+
+  const handleDelete = async () => {
+    if (!confirm("Eliminar este diagnóstico?")) return;
+    await api.deleteDiagnostic(Number(id));
+    navigate("/crm/diagnostics");
+  };
+
+  if (loading) return <CRMLayout><div className="p-8 text-white/30">Carregando...</div></CRMLayout>;
+  if (!d) return <CRMLayout><div className="p-8 text-white/30">Não encontrado.</div></CRMLayout>;
+
+  return (
+    <CRMLayout>
+      <div className="p-8 max-w-3xl">
+        <div className="flex items-center gap-4 mb-8">
+          <button onClick={() => navigate("/crm/diagnostics")} className="text-white/30 hover:text-white text-sm transition-colors">← Voltar</button>
+          <div className="flex-1">
+            <p className="text-xs font-mono text-violet-400 tracking-widest mb-1">DIAGNÓSTICO #{d.id}</p>
+            <h1 className="text-2xl font-bold">{d.name}</h1>
+          </div>
+          <button onClick={handleDelete} className="text-red-400/50 hover:text-red-400 text-sm font-mono transition-colors">ELIMINAR</button>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {[
+            { label: "E-MAIL", value: d.email },
+            { label: "PAÍS", value: d.countryCode?.toUpperCase() || "—" },
+            { label: "BUDGET", value: d.budget || "—" },
+            { label: "TIMELINE", value: d.timeline || "—" },
+            { label: "RECEBIDO EM", value: new Date(d.createdAt).toLocaleString("pt-BR") },
+          ].map((field) => (
+            <div key={field.label} className="border border-white/5 bg-white/2 p-5">
+              <p className="text-xs font-mono text-white/30 tracking-widest mb-2">{field.label}</p>
+              <p className="text-sm text-white">{field.value}</p>
+            </div>
+          ))}
+
+          <div className="border border-white/5 bg-white/2 p-5">
+            <p className="text-xs font-mono text-white/30 tracking-widest mb-2">STATUS</p>
+            <select
+              value={d.status}
+              onChange={(e) => handleStatusChange(e.target.value)}
+              disabled={saving}
+              className={`bg-transparent border-none text-sm font-bold focus:outline-none cursor-pointer ${STATUS_COLORS[d.status] || "text-white"}`}
+            >
+              {STATUS_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value} className="bg-black text-white">{o.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {d.need && (
+          <div className="border border-white/5 bg-white/2 p-6">
+            <p className="text-xs font-mono text-white/30 tracking-widest mb-3">NECESSIDADE PRINCIPAL</p>
+            <p className="text-sm text-white leading-relaxed">{d.need}</p>
+          </div>
+        )}
+      </div>
+    </CRMLayout>
+  );
+}

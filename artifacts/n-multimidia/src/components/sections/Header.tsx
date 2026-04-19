@@ -73,6 +73,16 @@ export function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
+            <Link
+              href="/crm/login"
+              className="w-9 h-9 flex items-center justify-center border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-colors"
+              title="CRM Admin"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </Link>
             <button
               onClick={() => handleSectionNav('contato')}
               className="text-sm font-mono font-bold tracking-widest uppercase px-6 py-2.5 bg-primary text-white hover:bg-primary/80 transition-colors"

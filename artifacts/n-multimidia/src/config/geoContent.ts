@@ -272,3 +272,5 @@ export function getGeoContent(countryCode: string): GeoContent {
   const key = countryCode as CountryCode;
   return content[key] ?? content['default'];
 }
+
+export const geoContent = content;
