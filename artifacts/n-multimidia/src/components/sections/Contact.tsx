@@ -16,6 +16,7 @@ export function Contact() {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [budget, setBudget] = useState("");
   const [timeline, setTimeline] = useState("");
   const [need, setNeed] = useState("");
@@ -32,7 +33,7 @@ export function Contact() {
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email) return;
+    if (!name || !email || !phone) return;
     setStep(2);
   };
 
@@ -42,7 +43,7 @@ export function Contact() {
     setError("");
     try {
       await api.submitDiagnostic({
-        name, role, email, budget, timeline, need, countryCode,
+        name, role, email, phone, budget, timeline, need, countryCode,
         segment, companySize, businessModel, digitalMaturity, mainChannel,
       });
       setSuccess(true);
@@ -86,13 +87,13 @@ export function Contact() {
               <div className="flex border-b border-white/5">
                 <div className={`flex-1 py-4 px-8 flex items-center gap-3 transition-colors ${step === 1 ? 'border-b-2 border-primary' : 'border-b-2 border-transparent'}`}>
                   <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${step === 1 ? 'bg-primary text-white' : 'bg-primary text-white'}`}>1</span>
-                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 1 ? 'text-white' : 'text-white/60'}`}>BANT</span>
-                  <span className={`text-xs text-muted-foreground hidden md:block`}>Budget · Authority · Need · Timeline</span>
+                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 1 ? 'text-white' : 'text-white/60'}`}>Informações</span>
+                  <span className={`text-xs text-muted-foreground hidden md:block`}>Dados de contacto e necessidade</span>
                 </div>
                 <div className={`flex-1 py-4 px-8 flex items-center gap-3 transition-colors ${step === 2 ? 'border-b-2 border-primary' : 'border-b-2 border-transparent'}`}>
                   <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${step === 2 ? 'bg-primary text-white' : 'bg-white/10 text-white/40'}`}>2</span>
-                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 2 ? 'text-white' : 'text-white/40'}`}>ICP</span>
-                  <span className={`text-xs text-muted-foreground hidden md:block ${step === 2 ? '' : 'opacity-40'}`}>Ideal Customer Profile</span>
+                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 2 ? 'text-white' : 'text-white/40'}`}>Perfil da Empresa</span>
+                  <span className={`text-xs text-muted-foreground hidden md:block ${step === 2 ? '' : 'opacity-40'}`}>Segmento · Tamanho · Maturidade</span>
                 </div>
               </div>
 
@@ -119,14 +120,20 @@ export function Contact() {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="text-sm font-mono text-muted-foreground">03. E-MAIL CORPORATIVO</label>
-                        <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@suaempresa.com" type="email" className="bg-background border-white/10 h-12" required />
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-sm font-mono text-muted-foreground">03. E-MAIL CORPORATIVO</label>
+                          <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@suaempresa.com" type="email" className="bg-background border-white/10 h-12" required />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-mono text-muted-foreground">04. WHATSAPP / TELEFONE</label>
+                          <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+244 9XX XXX XXX" type="tel" className="bg-background border-white/10 h-12" required />
+                        </div>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">04. {c.budgetLabel}</label>
+                          <label className="text-sm font-mono text-muted-foreground">05. {c.budgetLabel}</label>
                           <Select onValueChange={setBudget} value={budget}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder={c.budgetPlaceholder} />
@@ -139,7 +146,7 @@ export function Contact() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">05. TIMELINE</label>
+                          <label className="text-sm font-mono text-muted-foreground">06. TIMELINE</label>
                           <Select onValueChange={setTimeline} value={timeline}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder={c.timelinePlaceholder} />
@@ -154,7 +161,7 @@ export function Contact() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-mono text-muted-foreground">06. NECESSIDADE PRINCIPAL</label>
+                        <label className="text-sm font-mono text-muted-foreground">07. NECESSIDADE PRINCIPAL</label>
                         <Textarea
                           value={need}
                           onChange={(e) => setNeed(e.target.value)}
@@ -181,7 +188,7 @@ export function Contact() {
                     >
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">06. SEGMENTO / NICHO</label>
+                          <label className="text-sm font-mono text-muted-foreground">08. SEGMENTO / NICHO</label>
                           <Select onValueChange={setSegment} value={segment}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder="Selecione o segmento" />
@@ -194,7 +201,7 @@ export function Contact() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">07. TAMANHO DA EMPRESA</label>
+                          <label className="text-sm font-mono text-muted-foreground">09. TAMANHO DA EMPRESA</label>
                           <Select onValueChange={setCompanySize} value={companySize}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder="Nº de colaboradores" />
@@ -210,7 +217,7 @@ export function Contact() {
 
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">08. MODELO DE NEGÓCIO</label>
+                          <label className="text-sm font-mono text-muted-foreground">10. MODELO DE NEGÓCIO</label>
                           <Select onValueChange={setBusinessModel} value={businessModel}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder="Como você vende?" />
@@ -223,7 +230,7 @@ export function Contact() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">09. MATURIDADE DIGITAL</label>
+                          <label className="text-sm font-mono text-muted-foreground">11. MATURIDADE DIGITAL</label>
                           <Select onValueChange={setDigitalMaturity} value={digitalMaturity}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder="Onde você está hoje?" />
@@ -238,7 +245,7 @@ export function Contact() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-mono text-muted-foreground">10. CANAL PRINCIPAL HOJE</label>
+                        <label className="text-sm font-mono text-muted-foreground">12. CANAL PRINCIPAL HOJE</label>
                         <Select onValueChange={setMainChannel} value={mainChannel}>
                           <SelectTrigger className="bg-background border-white/10 h-12">
                             <SelectValue placeholder="Onde está a sua audiência?" />

@@ -8,6 +8,13 @@
       "when": 1700000000000,
       "tag": "0001_initial",
       "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1776714768479,
+      "tag": "0001_dry_valeria_richards",
+      "breakpoints": true
     }
   ]
 }

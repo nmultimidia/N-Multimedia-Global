@@ -17,6 +17,7 @@ export const diagnosticsTable = pgTable("diagnostics", {
   businessModel: text("business_model"),
   digitalMaturity: text("digital_maturity"),
   mainChannel: text("main_channel"),
+  phone: text("phone"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

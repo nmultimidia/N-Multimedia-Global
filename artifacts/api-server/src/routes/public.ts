@@ -8,7 +8,7 @@ import { logger } from "../lib/logger";
 const router = Router();
 
 router.post("/diagnostic", async (req, res) => {
-  const { name, role, email, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel } = req.body;
+  const { name, role, email, phone, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel } = req.body;
 
   if (!name || !email) {
     res.status(400).json({ error: "Name and email are required" });
@@ -17,14 +17,14 @@ router.post("/diagnostic", async (req, res) => {
 
   const [row] = await db
     .insert(diagnosticsTable)
-    .values({ name, role, email, budget, timeline, need, countryCode: countryCode || "unknown", status: "new", segment, companySize, businessModel, digitalMaturity, mainChannel })
+    .values({ name, role, email, phone, budget, timeline, need, countryCode: countryCode || "unknown", status: "new", segment, companySize, businessModel, digitalMaturity, mainChannel })
     .returning();
 
-  sendDiagnosticEmail({ name, role, email, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel }).catch((err) =>
+  sendDiagnosticEmail({ name, role, email, phone, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel }).catch((err) =>
     logger.error({ err }, "Failed to send diagnostic email")
   );
 
-  fireWebhook({ id: row.id, name, role, email, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel, createdAt: row.createdAt }).catch((err) =>
+  fireWebhook({ id: row.id, name, role, email, phone, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel, createdAt: row.createdAt }).catch((err) =>
     logger.error({ err }, "Failed to fire webhook")
   );
 

@@ -12,6 +12,7 @@ export async function sendDiagnosticEmail(diagnostic: {
   name: string;
   role?: string | null;
   email: string;
+  phone?: string | null;
   budget?: string | null;
   timeline?: string | null;
   need?: string | null;
@@ -51,12 +52,13 @@ export async function sendDiagnosticEmail(diagnostic: {
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">NOME</td><td style="padding:8px 0">${diagnostic.name}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">CARGO</td><td style="padding:8px 0">${diagnostic.role || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">E-MAIL</td><td style="padding:8px 0">${diagnostic.email}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">WHATSAPP / TELEFONE</td><td style="padding:8px 0">${diagnostic.phone || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">PAÍS</td><td style="padding:8px 0">${diagnostic.countryCode?.toUpperCase() || '—'}</td></tr>
-          <tr><td colspan="2" style="padding:16px 0 4px;color:#7c3aed;font-size:11px;font-weight:bold;letter-spacing:2px">BANT</td></tr>
+          <tr><td colspan="2" style="padding:16px 0 4px;color:#7c3aed;font-size:11px;font-weight:bold;letter-spacing:2px">INFORMAÇÕES</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">BUDGET</td><td style="padding:8px 0">${diagnostic.budget || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">TIMELINE</td><td style="padding:8px 0">${diagnostic.timeline || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">NECESSIDADE</td><td style="padding:8px 0">${diagnostic.need || '—'}</td></tr>
-          <tr><td colspan="2" style="padding:16px 0 4px;color:#7c3aed;font-size:11px;font-weight:bold;letter-spacing:2px">ICP</td></tr>
+          <tr><td colspan="2" style="padding:16px 0 4px;color:#7c3aed;font-size:11px;font-weight:bold;letter-spacing:2px">PERFIL DA EMPRESA</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">SEGMENTO</td><td style="padding:8px 0">${diagnostic.segment || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">TAMANHO DA EMPRESA</td><td style="padding:8px 0">${diagnostic.companySize || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">MODELO DE NEGÓCIO</td><td style="padding:8px 0">${diagnostic.businessModel || '—'}</td></tr>
