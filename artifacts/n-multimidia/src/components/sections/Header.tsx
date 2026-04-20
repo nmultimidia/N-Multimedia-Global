@@ -4,6 +4,7 @@ import { Link, useLocation } from 'wouter';
 import { useGeo } from '@/context/GeoContext';
 
 const navLinks = [
+  { label: 'Home', href: '/' },
   { label: 'Serviços', href: '/#servicos' },
   { label: 'Resultados', href: '/#resultados' },
   { label: 'Processo', href: '/#processo' },
