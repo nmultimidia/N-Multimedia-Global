@@ -45,9 +45,9 @@ export function Footer() {
               <Link href="/carreira" className="block text-sm text-muted-foreground hover:text-white transition-colors">
                 Carreiras
               </Link>
-              <a href="#" className="block text-sm text-muted-foreground hover:text-white transition-colors">
+              <Link href="/sobre" className="block text-sm text-muted-foreground hover:text-white transition-colors">
                 Sobre
-              </a>
+              </Link>
               <a href="#" className="block text-sm text-muted-foreground hover:text-white transition-colors">
                 Cases
               </a>
@@ -75,7 +75,7 @@ export function Footer() {
             N Multimídia © 2025 — Global Operations
           </div>
           <div className="text-xs font-mono text-muted-foreground/40 tracking-widest">
-            WE DON'T SELL MARKETING. WE SELL LEVERAGE.
+            EMPOWERING SMALLS, SCALLING GREATS
           </div>
         </div>
       </div>

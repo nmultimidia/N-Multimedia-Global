@@ -36,7 +36,7 @@ export function Hero() {
           className="max-w-4xl"
         >
           <h2 className="text-primary font-mono tracking-widest uppercase text-sm md:text-base mb-6">
-            WE DON'T SELL MARKETING. WE SELL LEVERAGE.
+            EMPOWERING SMALLS, SCALLING GREATS
           </h2>
           <h3 className="text-4xl md:text-6xl font-bold tracking-tight mb-8 leading-tight">
             {geo.hero.tagline}{' '}

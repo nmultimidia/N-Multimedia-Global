@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Carreira from "@/pages/Carreira";
+import Sobre from "@/pages/Sobre";
 import CRMLogin from "@/pages/crm/CRMLogin";
 import CRMDashboard from "@/pages/crm/CRMDashboard";
 import CRMDiagnostics from "@/pages/crm/CRMDiagnostics";
@@ -32,6 +33,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/sobre" component={Sobre} />
       <Route path="/carreira" component={Carreira} />
       <Route path="/crm/login" component={CRMLogin} />
       <Route path="/crm/dashboard">
