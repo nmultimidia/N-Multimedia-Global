@@ -22,6 +22,7 @@ export async function sendDiagnosticEmail(diagnostic: {
   businessModel?: string | null;
   digitalMaturity?: string | null;
   mainChannel?: string | null;
+  website?: string | null;
 }) {
   const adminEmail = await getSetting("admin_email") || "gabrieltatai@nmultimidia.com";
   const smtpHost = await getSetting("smtp_host");
@@ -64,6 +65,7 @@ export async function sendDiagnosticEmail(diagnostic: {
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">MODELO DE NEGÓCIO</td><td style="padding:8px 0">${diagnostic.businessModel || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">MATURIDADE DIGITAL</td><td style="padding:8px 0">${diagnostic.digitalMaturity || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">CANAL PRINCIPAL</td><td style="padding:8px 0">${diagnostic.mainChannel || '—'}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">WEBSITE</td><td style="padding:8px 0">${diagnostic.website ? `<a href="${diagnostic.website}" style="color:#7c3aed">${diagnostic.website}</a>` : '—'}</td></tr>
         </table>
         <p style="margin:24px 0 0;color:#52525b;font-size:12px">N Multimídia CRM — ${new Date().toLocaleString('pt-BR')}</p>
       </div>

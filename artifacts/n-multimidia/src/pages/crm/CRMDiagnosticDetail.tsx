@@ -132,10 +132,15 @@ export default function CRMDiagnosticDetail() {
                   { label: "MODELO DE NEGÓCIO", value: d.businessModel || "—" },
                   { label: "MATURIDADE DIGITAL", value: d.digitalMaturity || "—" },
                   { label: "CANAL PRINCIPAL", value: d.mainChannel || "—" },
+                  { label: "WEBSITE", value: d.website || "—" },
                 ].map((field) => (
                   <div key={field.label} className="border border-white/5 bg-white/2 p-5">
                     <p className="text-xs font-mono text-white/30 tracking-widest mb-2">{field.label}</p>
-                    <p className="text-sm text-white">{field.value}</p>
+                    {field.label === "WEBSITE" && d.website ? (
+                      <a href={d.website} target="_blank" rel="noopener noreferrer" className="text-sm text-violet-400 hover:text-violet-300 transition-colors break-all">{d.website}</a>
+                    ) : (
+                      <p className="text-sm text-white">{field.value}</p>
+                    )}
                   </div>
                 ))}
               </div>

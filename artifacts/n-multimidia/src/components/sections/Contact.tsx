@@ -71,6 +71,8 @@ export function Contact() {
   const [businessModel, setBusinessModel] = useState("");
   const [digitalMaturity, setDigitalMaturity] = useState("");
   const [mainChannel, setMainChannel] = useState("");
+  const [hasWebsite, setHasWebsite] = useState(false);
+  const [website, setWebsite] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -97,6 +99,7 @@ export function Contact() {
       await api.submitDiagnostic({
         name, role, email, phone, budget, timeline, need, countryCode,
         segment, companySize, businessModel, digitalMaturity, mainChannel,
+        website: hasWebsite ? website : "",
       });
       setSuccess(true);
     } catch (err: any) {
@@ -340,6 +343,44 @@ export function Contact() {
                             ))}
                           </SelectContent>
                         </Select>
+                      </div>
+
+                      <div className="space-y-3">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                          <div
+                            onClick={() => { setHasWebsite(!hasWebsite); if (hasWebsite) setWebsite(""); }}
+                            className={`w-5 h-5 shrink-0 border flex items-center justify-center transition-colors cursor-pointer ${hasWebsite ? 'bg-primary border-primary' : 'border-white/20 bg-transparent group-hover:border-white/40'}`}
+                          >
+                            {hasWebsite && (
+                              <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                                <path d="M1 4L3.5 6.5L9 1" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            )}
+                          </div>
+                          <span className="text-sm font-mono text-muted-foreground">
+                            13. {countryCode === 'US' || countryCode === 'GB' ? 'Do you have a website?' : 'A sua empresa possui website?'}
+                          </span>
+                        </label>
+
+                        <AnimatePresence>
+                          {hasWebsite && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <Input
+                                value={website}
+                                onChange={(e) => setWebsite(e.target.value)}
+                                placeholder={countryCode === 'US' || countryCode === 'GB' ? 'https://yourwebsite.com' : 'https://seusite.com'}
+                                type="url"
+                                className="bg-background border-white/10 h-12"
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
 
                       {error && (
