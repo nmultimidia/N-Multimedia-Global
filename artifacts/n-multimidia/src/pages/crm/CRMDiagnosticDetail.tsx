@@ -64,13 +64,25 @@ export default function CRMDiagnosticDetail() {
             <div className="grid md:grid-cols-2 gap-4">
               {[
                 { label: "E-MAIL", value: d.email },
+                { label: "WHATSAPP / TELEFONE", value: d.phone || "—" },
                 { label: "CARGO", value: d.role || "—" },
                 { label: "PAÍS", value: d.countryCode?.toUpperCase() || "—" },
                 { label: "RECEBIDO EM", value: new Date(d.createdAt).toLocaleString("pt-BR") },
               ].map((field) => (
                 <div key={field.label} className="border border-white/5 bg-white/2 p-5">
                   <p className="text-xs font-mono text-white/30 tracking-widest mb-2">{field.label}</p>
-                  <p className="text-sm text-white">{field.value}</p>
+                  {field.label === "WHATSAPP / TELEFONE" && d.phone ? (
+                    <a
+                      href={`https://wa.me/${d.phone.replace(/\D/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-green-400 hover:text-green-300 transition-colors"
+                    >
+                      {d.phone}
+                    </a>
+                  ) : (
+                    <p className="text-sm text-white">{field.value}</p>
+                  )}
                 </div>
               ))}
               <div className="border border-white/5 bg-white/2 p-5">
@@ -90,7 +102,7 @@ export default function CRMDiagnosticDetail() {
           </div>
 
           <div>
-            <p className="text-xs font-mono text-violet-400/60 tracking-widest mb-4">BANT</p>
+            <p className="text-xs font-mono text-violet-400/60 tracking-widest mb-4">INFORMAÇÕES</p>
             <div className="grid md:grid-cols-2 gap-4">
               {[
                 { label: "BUDGET", value: d.budget || "—" },
@@ -112,7 +124,7 @@ export default function CRMDiagnosticDetail() {
 
           {(d.segment || d.companySize || d.businessModel || d.digitalMaturity || d.mainChannel) && (
             <div>
-              <p className="text-xs font-mono text-violet-400/60 tracking-widest mb-4">ICP — IDEAL CUSTOMER PROFILE</p>
+              <p className="text-xs font-mono text-violet-400/60 tracking-widest mb-4">PERFIL DA EMPRESA</p>
               <div className="grid md:grid-cols-2 gap-4">
                 {[
                   { label: "SEGMENTO", value: d.segment || "—" },

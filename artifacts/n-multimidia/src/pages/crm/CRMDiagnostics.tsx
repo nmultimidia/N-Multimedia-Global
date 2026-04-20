@@ -25,7 +25,7 @@ export default function CRMDiagnostics() {
   const filtered = diagnostics.filter((d) => {
     const matchStatus = filter === "all" || d.status === filter;
     const q = search.toLowerCase();
-    const matchSearch = !q || d.name?.toLowerCase().includes(q) || d.email?.toLowerCase().includes(q) || d.countryCode?.toLowerCase().includes(q);
+    const matchSearch = !q || d.name?.toLowerCase().includes(q) || d.email?.toLowerCase().includes(q) || d.countryCode?.toLowerCase().includes(q) || d.phone?.toLowerCase().includes(q);
     return matchStatus && matchSearch;
   });
 
@@ -41,7 +41,7 @@ export default function CRMDiagnostics() {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por nome, email ou país..."
+            placeholder="Buscar por nome, email, telefone ou país..."
             className="bg-black border border-white/10 px-4 py-2 text-sm text-white placeholder-white/20 focus:outline-none focus:border-violet-500 transition-colors flex-1 min-w-48"
           />
           {["all", "new", "contacted", "qualified", "closed"].map((s) => (
@@ -56,9 +56,10 @@ export default function CRMDiagnostics() {
         </div>
 
         <div className="border border-white/5">
-          <div className="grid grid-cols-[1fr_1.5fr_80px_120px_120px_40px] gap-4 px-6 py-3 border-b border-white/5 text-xs font-mono text-white/30 tracking-widest">
+          <div className="grid grid-cols-[1fr_1.5fr_1fr_80px_120px_120px_40px] gap-4 px-6 py-3 border-b border-white/5 text-xs font-mono text-white/30 tracking-widest">
             <span>NOME</span>
             <span>E-MAIL</span>
+            <span>WHATSAPP / TEL.</span>
             <span>PAÍS</span>
             <span>STATUS</span>
             <span>DATA</span>
@@ -72,9 +73,22 @@ export default function CRMDiagnostics() {
           ) : (
             <div className="divide-y divide-white/5">
               {filtered.map((d) => (
-                <div key={d.id} className="grid grid-cols-[1fr_1.5fr_80px_120px_120px_40px] gap-4 items-center px-6 py-4 hover:bg-white/2 transition-colors">
+                <div key={d.id} className="grid grid-cols-[1fr_1.5fr_1fr_80px_120px_120px_40px] gap-4 items-center px-6 py-4 hover:bg-white/2 transition-colors">
                   <Link href={`/crm/diagnostics/${d.id}`} className="font-semibold text-sm hover:text-violet-400 transition-colors truncate">{d.name}</Link>
                   <span className="text-sm text-white/50 truncate">{d.email}</span>
+                  {d.phone ? (
+                    <a
+                      href={`https://wa.me/${d.phone.replace(/\D/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-green-400 hover:text-green-300 transition-colors truncate"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {d.phone}
+                    </a>
+                  ) : (
+                    <span className="text-xs text-white/20">—</span>
+                  )}
                   <span className="text-xs font-mono text-white/40">{d.countryCode?.toUpperCase() || "—"}</span>
                   <span className={`text-xs font-mono px-2 py-1 border rounded w-fit ${STATUS_COLORS[d.status] || STATUS_COLORS.new}`}>
                     {STATUS_LABELS[d.status] || d.status}
