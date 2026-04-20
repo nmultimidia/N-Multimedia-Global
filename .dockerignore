@@ -1,0 +1,29 @@
+# Dependências (reconstruídas no Docker)
+node_modules
+**/node_modules
+
+# Builds anteriores
+**/dist
+artifacts/n-multimidia/dist
+artifacts/api-server/dist
+
+# Ficheiros de desenvolvimento
+.git
+.gitignore
+.env
+.env.*
+*.log
+
+# Ferramentas locais
+.replit
+replit.nix
+.local
+.cache
+
+# Assets temporários
+attached_assets/screenshots
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
