@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,46 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGeo } from "@/context/GeoContext";
 import { api } from "@/lib/api";
+
+const COUNTRY_CODES = [
+  { code: "AO", flag: "🇦🇴", name: "Angola", dial: "+244" },
+  { code: "BR", flag: "🇧🇷", name: "Brasil", dial: "+55" },
+  { code: "PT", flag: "🇵🇹", name: "Portugal", dial: "+351" },
+  { code: "MZ", flag: "🇲🇿", name: "Moçambique", dial: "+258" },
+  { code: "CV", flag: "🇨🇻", name: "Cabo Verde", dial: "+238" },
+  { code: "ST", flag: "🇸🇹", name: "São Tomé e Príncipe", dial: "+239" },
+  { code: "GW", flag: "🇬🇼", name: "Guiné-Bissau", dial: "+245" },
+  { code: "US", flag: "🇺🇸", name: "Estados Unidos", dial: "+1" },
+  { code: "GB", flag: "🇬🇧", name: "Reino Unido", dial: "+44" },
+  { code: "ZA", flag: "🇿🇦", name: "África do Sul", dial: "+27" },
+  { code: "NG", flag: "🇳🇬", name: "Nigéria", dial: "+234" },
+  { code: "KE", flag: "🇰🇪", name: "Quénia", dial: "+254" },
+  { code: "GH", flag: "🇬🇭", name: "Gana", dial: "+233" },
+  { code: "NA", flag: "🇳🇦", name: "Namíbia", dial: "+264" },
+  { code: "AR", flag: "🇦🇷", name: "Argentina", dial: "+54" },
+  { code: "CO", flag: "🇨🇴", name: "Colômbia", dial: "+57" },
+  { code: "MX", flag: "🇲🇽", name: "México", dial: "+52" },
+  { code: "CA", flag: "🇨🇦", name: "Canadá", dial: "+1" },
+  { code: "AU", flag: "🇦🇺", name: "Austrália", dial: "+61" },
+  { code: "FR", flag: "🇫🇷", name: "França", dial: "+33" },
+  { code: "DE", flag: "🇩🇪", name: "Alemanha", dial: "+49" },
+  { code: "ES", flag: "🇪🇸", name: "Espanha", dial: "+34" },
+  { code: "IT", flag: "🇮🇹", name: "Itália", dial: "+39" },
+  { code: "NL", flag: "🇳🇱", name: "Países Baixos", dial: "+31" },
+  { code: "CH", flag: "🇨🇭", name: "Suíça", dial: "+41" },
+  { code: "BE", flag: "🇧🇪", name: "Bélgica", dial: "+32" },
+  { code: "SE", flag: "🇸🇪", name: "Suécia", dial: "+46" },
+  { code: "NO", flag: "🇳🇴", name: "Noruega", dial: "+47" },
+  { code: "DK", flag: "🇩🇰", name: "Dinamarca", dial: "+45" },
+  { code: "JP", flag: "🇯🇵", name: "Japão", dial: "+81" },
+  { code: "CN", flag: "🇨🇳", name: "China", dial: "+86" },
+  { code: "IN", flag: "🇮🇳", name: "Índia", dial: "+91" },
+];
+
+function getDefaultDial(countryCode: string): string {
+  const found = COUNTRY_CODES.find((c) => c.code === countryCode.toUpperCase());
+  return found?.dial ?? "+244";
+}
 
 export function Contact() {
   const { geo, countryCode } = useGeo();
@@ -16,7 +56,8 @@ export function Contact() {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [dialCode, setDialCode] = useState(() => getDefaultDial(countryCode));
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [budget, setBudget] = useState("");
   const [timeline, setTimeline] = useState("");
   const [need, setNeed] = useState("");
@@ -31,9 +72,16 @@ export function Contact() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  const selectedCountry = useMemo(
+    () => COUNTRY_CODES.find((c) => c.dial === dialCode) ?? COUNTRY_CODES[0],
+    [dialCode]
+  );
+
+  const phone = phoneNumber ? `${dialCode} ${phoneNumber}` : "";
+
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !phone) return;
+    if (!name || !email || !phoneNumber) return;
     setStep(2);
   };
 
@@ -127,7 +175,33 @@ export function Contact() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-mono text-muted-foreground">04. WHATSAPP / TELEFONE</label>
-                          <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+244 9XX XXX XXX" type="tel" className="bg-background border-white/10 h-12" required />
+                          <div className="flex h-12 rounded-md border border-white/10 bg-background overflow-hidden focus-within:ring-1 focus-within:ring-primary/50">
+                            <Select value={dialCode} onValueChange={setDialCode}>
+                              <SelectTrigger className="w-[110px] shrink-0 border-0 border-r border-white/10 rounded-none bg-transparent h-full px-3 gap-1.5 focus:ring-0 text-sm">
+                                <span className="text-lg leading-none">{selectedCountry.flag}</span>
+                                <span className="text-white/70 font-mono text-xs">{dialCode}</span>
+                              </SelectTrigger>
+                              <SelectContent className="max-h-64">
+                                {COUNTRY_CODES.map((country) => (
+                                  <SelectItem key={`${country.code}-${country.dial}`} value={country.dial}>
+                                    <span className="flex items-center gap-2">
+                                      <span className="text-base">{country.flag}</span>
+                                      <span className="text-sm">{country.name}</span>
+                                      <span className="text-xs text-muted-foreground font-mono ml-auto">{country.dial}</span>
+                                    </span>
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <input
+                              type="tel"
+                              value={phoneNumber}
+                              onChange={(e) => setPhoneNumber(e.target.value)}
+                              placeholder="9XX XXX XXX"
+                              required
+                              className="flex-1 bg-transparent px-3 text-sm outline-none text-white placeholder:text-muted-foreground"
+                            />
+                          </div>
                         </div>
                       </div>
 
