@@ -15,36 +15,40 @@ const COUNTRY_CODES = [
   { code: "CV", flag: "🇨🇻", name: "Cabo Verde", dial: "+238" },
   { code: "ST", flag: "🇸🇹", name: "São Tomé e Príncipe", dial: "+239" },
   { code: "GW", flag: "🇬🇼", name: "Guiné-Bissau", dial: "+245" },
-  { code: "US", flag: "🇺🇸", name: "Estados Unidos", dial: "+1" },
-  { code: "GB", flag: "🇬🇧", name: "Reino Unido", dial: "+44" },
-  { code: "ZA", flag: "🇿🇦", name: "África do Sul", dial: "+27" },
-  { code: "NG", flag: "🇳🇬", name: "Nigéria", dial: "+234" },
-  { code: "KE", flag: "🇰🇪", name: "Quénia", dial: "+254" },
-  { code: "GH", flag: "🇬🇭", name: "Gana", dial: "+233" },
-  { code: "NA", flag: "🇳🇦", name: "Namíbia", dial: "+264" },
+  { code: "US", flag: "🇺🇸", name: "United States", dial: "+1" },
+  { code: "CA", flag: "🇨🇦", name: "Canada", dial: "+1-CA" },
+  { code: "GB", flag: "🇬🇧", name: "United Kingdom", dial: "+44" },
+  { code: "ZA", flag: "🇿🇦", name: "South Africa", dial: "+27" },
+  { code: "NG", flag: "🇳🇬", name: "Nigeria", dial: "+234" },
+  { code: "KE", flag: "🇰🇪", name: "Kenya", dial: "+254" },
+  { code: "GH", flag: "🇬🇭", name: "Ghana", dial: "+233" },
+  { code: "NA", flag: "🇳🇦", name: "Namibia", dial: "+264" },
   { code: "AR", flag: "🇦🇷", name: "Argentina", dial: "+54" },
-  { code: "CO", flag: "🇨🇴", name: "Colômbia", dial: "+57" },
+  { code: "CO", flag: "🇨🇴", name: "Colombia", dial: "+57" },
   { code: "MX", flag: "🇲🇽", name: "México", dial: "+52" },
-  { code: "CA", flag: "🇨🇦", name: "Canadá", dial: "+1" },
-  { code: "AU", flag: "🇦🇺", name: "Austrália", dial: "+61" },
-  { code: "FR", flag: "🇫🇷", name: "França", dial: "+33" },
-  { code: "DE", flag: "🇩🇪", name: "Alemanha", dial: "+49" },
-  { code: "ES", flag: "🇪🇸", name: "Espanha", dial: "+34" },
-  { code: "IT", flag: "🇮🇹", name: "Itália", dial: "+39" },
-  { code: "NL", flag: "🇳🇱", name: "Países Baixos", dial: "+31" },
-  { code: "CH", flag: "🇨🇭", name: "Suíça", dial: "+41" },
-  { code: "BE", flag: "🇧🇪", name: "Bélgica", dial: "+32" },
-  { code: "SE", flag: "🇸🇪", name: "Suécia", dial: "+46" },
-  { code: "NO", flag: "🇳🇴", name: "Noruega", dial: "+47" },
-  { code: "DK", flag: "🇩🇰", name: "Dinamarca", dial: "+45" },
-  { code: "JP", flag: "🇯🇵", name: "Japão", dial: "+81" },
+  { code: "AU", flag: "🇦🇺", name: "Australia", dial: "+61" },
+  { code: "FR", flag: "🇫🇷", name: "France", dial: "+33" },
+  { code: "DE", flag: "🇩🇪", name: "Germany", dial: "+49" },
+  { code: "ES", flag: "🇪🇸", name: "Spain", dial: "+34" },
+  { code: "IT", flag: "🇮🇹", name: "Italy", dial: "+39" },
+  { code: "NL", flag: "🇳🇱", name: "Netherlands", dial: "+31" },
+  { code: "CH", flag: "🇨🇭", name: "Switzerland", dial: "+41" },
+  { code: "BE", flag: "🇧🇪", name: "Belgium", dial: "+32" },
+  { code: "SE", flag: "🇸🇪", name: "Sweden", dial: "+46" },
+  { code: "NO", flag: "🇳🇴", name: "Norway", dial: "+47" },
+  { code: "DK", flag: "🇩🇰", name: "Denmark", dial: "+45" },
+  { code: "JP", flag: "🇯🇵", name: "Japan", dial: "+81" },
   { code: "CN", flag: "🇨🇳", name: "China", dial: "+86" },
-  { code: "IN", flag: "🇮🇳", name: "Índia", dial: "+91" },
+  { code: "IN", flag: "🇮🇳", name: "India", dial: "+91" },
 ];
 
 function getDefaultDial(countryCode: string): string {
   const found = COUNTRY_CODES.find((c) => c.code === countryCode.toUpperCase());
   return found?.dial ?? "+244";
+}
+
+function getDisplayDial(dial: string): string {
+  return dial.replace(/-CA$/, "");
 }
 
 export function Contact() {
@@ -77,7 +81,7 @@ export function Contact() {
     [dialCode]
   );
 
-  const phone = phoneNumber ? `${dialCode} ${phoneNumber}` : "";
+  const phone = phoneNumber ? `${getDisplayDial(dialCode)} ${phoneNumber}` : "";
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,21 +131,27 @@ export function Contact() {
           {success ? (
             <div className="text-center py-16 px-8">
               <div className="text-5xl mb-4">✓</div>
-              <h3 className="text-2xl font-bold mb-3 text-primary">Diagnóstico Enviado!</h3>
-              <p className="text-muted-foreground">A nossa equipa irá avaliar o seu perfil e entrar em contacto em breve.</p>
+              <h3 className="text-2xl font-bold mb-3 text-primary">
+                {countryCode === 'US' || countryCode === 'GB' ? 'Diagnostic Submitted!' : 'Diagnóstico Enviado!'}
+              </h3>
+              <p className="text-muted-foreground">
+                {countryCode === 'US' || countryCode === 'GB'
+                  ? 'Our team will review your profile and get in touch shortly.'
+                  : 'A nossa equipa irá avaliar o seu perfil e entrar em contacto em breve.'}
+              </p>
             </div>
           ) : (
             <>
               <div className="flex border-b border-white/5">
                 <div className={`flex-1 py-4 px-8 flex items-center gap-3 transition-colors ${step === 1 ? 'border-b-2 border-primary' : 'border-b-2 border-transparent'}`}>
                   <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${step === 1 ? 'bg-primary text-white' : 'bg-primary text-white'}`}>1</span>
-                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 1 ? 'text-white' : 'text-white/60'}`}>Informações</span>
-                  <span className={`text-xs text-muted-foreground hidden md:block`}>Dados de contacto e necessidade</span>
+                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 1 ? 'text-white' : 'text-white/60'}`}>{c.step1Label}</span>
+                  <span className="text-xs text-muted-foreground hidden md:block">{c.step1Sub}</span>
                 </div>
                 <div className={`flex-1 py-4 px-8 flex items-center gap-3 transition-colors ${step === 2 ? 'border-b-2 border-primary' : 'border-b-2 border-transparent'}`}>
                   <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${step === 2 ? 'bg-primary text-white' : 'bg-white/10 text-white/40'}`}>2</span>
-                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 2 ? 'text-white' : 'text-white/40'}`}>Perfil da Empresa</span>
-                  <span className={`text-xs text-muted-foreground hidden md:block ${step === 2 ? '' : 'opacity-40'}`}>Segmento · Tamanho · Maturidade</span>
+                  <span className={`text-xs font-mono tracking-widest uppercase ${step === 2 ? 'text-white' : 'text-white/40'}`}>{c.step2Label}</span>
+                  <span className={`text-xs text-muted-foreground hidden md:block ${step === 2 ? '' : 'opacity-40'}`}>{c.step2Sub}</span>
                 </div>
               </div>
 
@@ -159,27 +169,27 @@ export function Contact() {
                     >
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">01. NOME</label>
-                          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu nome completo" className="bg-background border-white/10 h-12" required />
+                          <label className="text-sm font-mono text-muted-foreground">01. {c.nameLabel}</label>
+                          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={c.namePlaceholder} className="bg-background border-white/10 h-12" required />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">02. CARGO</label>
-                          <Input value={role} onChange={(e) => setRole(e.target.value)} placeholder="Ex: CEO, Diretor de Marketing..." className="bg-background border-white/10 h-12" />
+                          <label className="text-sm font-mono text-muted-foreground">02. {c.roleLabel}</label>
+                          <Input value={role} onChange={(e) => setRole(e.target.value)} placeholder={c.rolePlaceholder} className="bg-background border-white/10 h-12" />
                         </div>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">03. E-MAIL CORPORATIVO</label>
-                          <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@suaempresa.com" type="email" className="bg-background border-white/10 h-12" required />
+                          <label className="text-sm font-mono text-muted-foreground">03. {c.emailLabel}</label>
+                          <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder={c.emailPlaceholder} type="email" className="bg-background border-white/10 h-12" required />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">04. WHATSAPP / TELEFONE</label>
+                          <label className="text-sm font-mono text-muted-foreground">04. {c.phoneLabel}</label>
                           <div className="flex h-12 rounded-md border border-white/10 bg-background overflow-hidden focus-within:ring-1 focus-within:ring-primary/50">
                             <Select value={dialCode} onValueChange={setDialCode}>
                               <SelectTrigger className="w-[110px] shrink-0 border-0 border-r border-white/10 rounded-none bg-transparent h-full px-3 gap-1.5 focus:ring-0 text-sm">
                                 <span className="text-lg leading-none">{selectedCountry.flag}</span>
-                                <span className="text-white/70 font-mono text-xs">{dialCode}</span>
+                                <span className="text-white/70 font-mono text-xs">{getDisplayDial(dialCode)}</span>
                               </SelectTrigger>
                               <SelectContent className="max-h-64">
                                 {COUNTRY_CODES.map((country) => (
@@ -187,7 +197,7 @@ export function Contact() {
                                     <span className="flex items-center gap-2">
                                       <span className="text-base">{country.flag}</span>
                                       <span className="text-sm">{country.name}</span>
-                                      <span className="text-xs text-muted-foreground font-mono ml-auto">{country.dial}</span>
+                                      <span className="text-xs text-muted-foreground font-mono ml-auto">{getDisplayDial(country.dial)}</span>
                                     </span>
                                   </SelectItem>
                                 ))}
@@ -197,7 +207,7 @@ export function Contact() {
                               type="tel"
                               value={phoneNumber}
                               onChange={(e) => setPhoneNumber(e.target.value)}
-                              placeholder="9XX XXX XXX"
+                              placeholder={c.phonePlaceholder}
                               required
                               className="flex-1 bg-transparent px-3 text-sm outline-none text-white placeholder:text-muted-foreground"
                             />
@@ -220,7 +230,7 @@ export function Contact() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">06. TIMELINE</label>
+                          <label className="text-sm font-mono text-muted-foreground">06. {c.timelineLabel}</label>
                           <Select onValueChange={setTimeline} value={timeline}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder={c.timelinePlaceholder} />
@@ -235,7 +245,7 @@ export function Contact() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-mono text-muted-foreground">07. NECESSIDADE PRINCIPAL</label>
+                        <label className="text-sm font-mono text-muted-foreground">07. {c.needLabel}</label>
                         <Textarea
                           value={need}
                           onChange={(e) => setNeed(e.target.value)}
@@ -245,7 +255,7 @@ export function Contact() {
                       </div>
 
                       <Button type="submit" className="w-full h-14 text-lg bg-white text-black hover:bg-white/90 rounded-none font-bold uppercase tracking-widest">
-                        Próximo → Perfil da Empresa
+                        {c.nextButton}
                       </Button>
                     </motion.form>
                   )}
@@ -262,26 +272,26 @@ export function Contact() {
                     >
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">08. SEGMENTO / NICHO</label>
+                          <label className="text-sm font-mono text-muted-foreground">08. {c.segmentLabel}</label>
                           <Select onValueChange={setSegment} value={segment}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
-                              <SelectValue placeholder="Selecione o segmento" />
+                              <SelectValue placeholder={c.segmentPlaceholder} />
                             </SelectTrigger>
                             <SelectContent>
-                              {["Tech / SaaS", "E-commerce", "Serviços Profissionais", "Saúde & Bem-estar", "Educação", "Varejo Físico", "Imobiliário", "Financeiro", "Outro"].map((v) => (
+                              {c.segmentOptions.map((v) => (
                                 <SelectItem key={v} value={v}>{v}</SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">09. TAMANHO DA EMPRESA</label>
+                          <label className="text-sm font-mono text-muted-foreground">09. {c.companySizeLabel}</label>
                           <Select onValueChange={setCompanySize} value={companySize}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
-                              <SelectValue placeholder="Nº de colaboradores" />
+                              <SelectValue placeholder={c.companySizePlaceholder} />
                             </SelectTrigger>
                             <SelectContent>
-                              {["1 a 5 pessoas", "6 a 20 pessoas", "21 a 50 pessoas", "51 a 200 pessoas", "Acima de 200"].map((v) => (
+                              {c.companySizeOptions.map((v) => (
                                 <SelectItem key={v} value={v}>{v}</SelectItem>
                               ))}
                             </SelectContent>
@@ -291,26 +301,26 @@ export function Contact() {
 
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">10. MODELO DE NEGÓCIO</label>
+                          <label className="text-sm font-mono text-muted-foreground">10. {c.businessModelLabel}</label>
                           <Select onValueChange={setBusinessModel} value={businessModel}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
-                              <SelectValue placeholder="Como você vende?" />
+                              <SelectValue placeholder={c.businessModelPlaceholder} />
                             </SelectTrigger>
                             <SelectContent>
-                              {["B2B (vende para empresas)", "B2C (vende para pessoas)", "B2B2C", "Marketplace", "Assinatura / SaaS", "Outro"].map((v) => (
+                              {c.businessModelOptions.map((v) => (
                                 <SelectItem key={v} value={v}>{v}</SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">11. MATURIDADE DIGITAL</label>
+                          <label className="text-sm font-mono text-muted-foreground">11. {c.digitalMaturityLabel}</label>
                           <Select onValueChange={setDigitalMaturity} value={digitalMaturity}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
-                              <SelectValue placeholder="Onde você está hoje?" />
+                              <SelectValue placeholder={c.digitalMaturityPlaceholder} />
                             </SelectTrigger>
                             <SelectContent>
-                              {["Iniciando — sem presença digital", "Básico — redes sociais e site", "Intermediário — já invisto em ads", "Avançado — tenho equipa e dados", "Maduro — quero escalar"].map((v) => (
+                              {c.digitalMaturityOptions.map((v) => (
                                 <SelectItem key={v} value={v}>{v}</SelectItem>
                               ))}
                             </SelectContent>
@@ -319,13 +329,13 @@ export function Contact() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-mono text-muted-foreground">12. CANAL PRINCIPAL HOJE</label>
+                        <label className="text-sm font-mono text-muted-foreground">12. {c.mainChannelLabel}</label>
                         <Select onValueChange={setMainChannel} value={mainChannel}>
                           <SelectTrigger className="bg-background border-white/10 h-12">
-                            <SelectValue placeholder="Onde está a sua audiência?" />
+                            <SelectValue placeholder={c.mainChannelPlaceholder} />
                           </SelectTrigger>
                           <SelectContent>
-                            {["Instagram / Facebook", "Google Ads / SEO", "LinkedIn", "TikTok", "WhatsApp / Email", "Indicação / Boca a boca", "Nenhum ainda", "Múltiplos canais"].map((v) => (
+                            {c.mainChannelOptions.map((v) => (
                               <SelectItem key={v} value={v}>{v}</SelectItem>
                             ))}
                           </SelectContent>
@@ -342,10 +352,10 @@ export function Contact() {
                           onClick={() => setStep(1)}
                           className="h-14 px-6 text-sm font-mono border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition-colors uppercase tracking-widest"
                         >
-                          ← Voltar
+                          {c.backButton}
                         </button>
                         <Button disabled={submitting} className="flex-1 h-14 text-lg bg-white text-black hover:bg-white/90 rounded-none font-bold uppercase tracking-widest">
-                          {submitting ? "Enviando..." : c.submitLabel}
+                          {submitting ? '...' : c.submitLabel}
                         </Button>
                       </div>
                     </motion.form>
