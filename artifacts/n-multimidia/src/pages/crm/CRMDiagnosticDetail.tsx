@@ -64,6 +64,7 @@ export default function CRMDiagnosticDetail() {
             <div className="grid md:grid-cols-2 gap-4">
               {[
                 { label: "E-MAIL", value: d.email },
+                { label: "CARGO", value: d.role || "—" },
                 { label: "PAÍS", value: d.countryCode?.toUpperCase() || "—" },
                 { label: "RECEBIDO EM", value: new Date(d.createdAt).toLocaleString("pt-BR") },
               ].map((field) => (

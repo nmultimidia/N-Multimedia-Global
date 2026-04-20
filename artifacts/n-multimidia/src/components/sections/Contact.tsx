@@ -14,6 +14,7 @@ export function Contact() {
   const [step, setStep] = useState<1 | 2>(1);
 
   const [name, setName] = useState("");
+  const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [budget, setBudget] = useState("");
   const [timeline, setTimeline] = useState("");
@@ -41,7 +42,7 @@ export function Contact() {
     setError("");
     try {
       await api.submitDiagnostic({
-        name, email, budget, timeline, need, countryCode,
+        name, role, email, budget, timeline, need, countryCode,
         segment, companySize, businessModel, digitalMaturity, mainChannel,
       });
       setSuccess(true);
@@ -109,18 +110,23 @@ export function Contact() {
                     >
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">01. AUTORIDADE — NOME / CARGO</label>
-                          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu Nome / Cargo" className="bg-background border-white/10 h-12" required />
+                          <label className="text-sm font-mono text-muted-foreground">01. NOME</label>
+                          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Seu nome completo" className="bg-background border-white/10 h-12" required />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">02. E-MAIL CORPORATIVO</label>
-                          <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@suaempresa.com" type="email" className="bg-background border-white/10 h-12" required />
+                          <label className="text-sm font-mono text-muted-foreground">02. CARGO</label>
+                          <Input value={role} onChange={(e) => setRole(e.target.value)} placeholder="Ex: CEO, Diretor de Marketing..." className="bg-background border-white/10 h-12" />
                         </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-mono text-muted-foreground">03. E-MAIL CORPORATIVO</label>
+                        <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@suaempresa.com" type="email" className="bg-background border-white/10 h-12" required />
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">03. {c.budgetLabel}</label>
+                          <label className="text-sm font-mono text-muted-foreground">04. {c.budgetLabel}</label>
                           <Select onValueChange={setBudget} value={budget}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder={c.budgetPlaceholder} />
@@ -133,7 +139,7 @@ export function Contact() {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-mono text-muted-foreground">04. TIMELINE</label>
+                          <label className="text-sm font-mono text-muted-foreground">05. TIMELINE</label>
                           <Select onValueChange={setTimeline} value={timeline}>
                             <SelectTrigger className="bg-background border-white/10 h-12">
                               <SelectValue placeholder={c.timelinePlaceholder} />
@@ -148,7 +154,7 @@ export function Contact() {
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-mono text-muted-foreground">05. NECESSIDADE PRINCIPAL</label>
+                        <label className="text-sm font-mono text-muted-foreground">06. NECESSIDADE PRINCIPAL</label>
                         <Textarea
                           value={need}
                           onChange={(e) => setNeed(e.target.value)}

@@ -10,6 +10,7 @@ async function getSetting(key: string): Promise<string | null> {
 
 export async function sendDiagnosticEmail(diagnostic: {
   name: string;
+  role?: string | null;
   email: string;
   budget?: string | null;
   timeline?: string | null;
@@ -47,7 +48,8 @@ export async function sendDiagnosticEmail(diagnostic: {
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#09090b;color:#fff;padding:32px;border-radius:8px">
         <h2 style="color:#7c3aed;margin:0 0 24px">Novo Diagnóstico Recebido</h2>
         <table style="width:100%;border-collapse:collapse">
-          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">NOME / CARGO</td><td style="padding:8px 0">${diagnostic.name}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">NOME</td><td style="padding:8px 0">${diagnostic.name}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">CARGO</td><td style="padding:8px 0">${diagnostic.role || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">E-MAIL</td><td style="padding:8px 0">${diagnostic.email}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">PAÍS</td><td style="padding:8px 0">${diagnostic.countryCode?.toUpperCase() || '—'}</td></tr>
           <tr><td colspan="2" style="padding:16px 0 4px;color:#7c3aed;font-size:11px;font-weight:bold;letter-spacing:2px">BANT</td></tr>
