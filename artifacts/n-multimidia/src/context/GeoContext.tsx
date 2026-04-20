@@ -13,12 +13,32 @@ const GeoContext = createContext<GeoContextType>({
   countryCode: 'BR',
 });
 
-async function fetchGeoFromAPI(code: string): Promise<GeoContent | null> {
+function deepMerge<T extends object>(base: T, override: Partial<T>): T {
+  const result = { ...base };
+  for (const key in override) {
+    const val = override[key];
+    if (val !== null && val !== undefined) {
+      if (
+        typeof val === 'object' &&
+        !Array.isArray(val) &&
+        typeof base[key] === 'object' &&
+        !Array.isArray(base[key])
+      ) {
+        result[key] = deepMerge(base[key] as object, val as object) as T[typeof key];
+      } else {
+        result[key] = val as T[typeof key];
+      }
+    }
+  }
+  return result;
+}
+
+async function fetchGeoFromAPI(code: string): Promise<Partial<GeoContent> | null> {
   try {
     const res = await fetch(`/api/geo-content/${code}`);
     if (!res.ok) return null;
     const data = await res.json();
-    return data as GeoContent;
+    return data as Partial<GeoContent>;
   } catch {
     return null;
   }
@@ -39,11 +59,14 @@ export function GeoProvider({ children }: { children: ReactNode }) {
         const code: string = data.country_code || 'BR';
         setCountryCode(code);
 
+        const staticContent = getGeoContent(code);
         const apiContent = await fetchGeoFromAPI(code);
+
         if (apiContent) {
-          setGeo({ ...apiContent, country: code as any });
+          const merged = deepMerge(staticContent, apiContent);
+          setGeo({ ...merged, country: code as any });
         } else {
-          setGeo(getGeoContent(code));
+          setGeo(staticContent);
         }
       })
       .catch(() => {})
