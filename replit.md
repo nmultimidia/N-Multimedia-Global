@@ -71,10 +71,40 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `geo_content` — Country-specific copy (stored as JSON)
 - `settings` — Key-value store (SMTP, agency identity)
 
+## Database Migrations
+
+Migrations live in `lib/db/migrations/`. Drizzle-kit is configured to use this folder.
+
+- `lib/db/migrations/0001_initial.sql` — creates all tables from scratch (initial state)
+- `lib/db/migrations/meta/_journal.json` — drizzle migration journal
+
+### Migration commands
+
+```bash
+# Apply pending migrations programmatically (any environment)
+pnpm --filter @workspace/db run migrate
+
+# Generate a new migration after schema changes (no DB required)
+pnpm --filter @workspace/db run generate
+
+# Push schema directly to DB (dev only, no migration file created)
+pnpm --filter @workspace/db run push
+```
+
+### Running in a new environment
+
+1. Copy `.env.example` to `.env` and fill in `DATABASE_URL`
+2. Run `pnpm install`
+3. Run `pnpm --filter @workspace/db run migrate`
+4. Start the API: `PORT=8080 pnpm --filter @workspace/api-server run dev`
+5. Start the frontend: `PORT=3000 BASE_PATH=/ pnpm --filter @workspace/n-multimidia run dev`
+
 ## Key Commands
 
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
+- `pnpm --filter @workspace/db run migrate` — run SQL migrations (any environment)
+- `pnpm --filter @workspace/db run generate` — generate new migration after schema changes
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
