@@ -24,6 +24,21 @@ export default function CRMSettings() {
     finally { setSaving(false); }
   };
 
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copyToClipboard = (value: string, key: string) => {
+    navigator.clipboard.writeText(value);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  const generateApiKey = () => {
+    const key = "nmk_" + Array.from(crypto.getRandomValues(new Uint8Array(24)))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    set("api_key", key);
+  };
+
   const groups = [
     {
       title: "Notificações por E-mail",
@@ -38,10 +53,10 @@ export default function CRMSettings() {
     },
     {
       title: "Identidade da Agência",
-      desc: "Informações gerais usadas no CRM e notificações.",
+      desc: "Informações gerais usados no CRM e notificações.",
       fields: [
         { key: "agency_name", label: "NOME DA AGÊNCIA", type: "text", placeholder: "N Multimídia" },
-        { key: "agency_tagline", label: "TAGLINE", type: "text", placeholder: "We don't sell marketing. We sell leverage." },
+        { key: "agency_tagline", label: "TAGLINE", type: "text", placeholder: "Empowering Smalls, Scalling Greats" },
       ],
     },
   ];
@@ -90,8 +105,126 @@ export default function CRMSettings() {
               </div>
             ))}
 
+            <div className="border border-violet-500/20 bg-violet-500/5">
+              <div className="px-6 py-4 border-b border-violet-500/10">
+                <h2 className="font-bold text-sm text-violet-300">Webhook</h2>
+                <p className="text-xs text-white/40 mt-1">
+                  Receba os dados de cada novo lead em tempo real. Cole a URL do Zapier, Make, n8n ou qualquer serviço.
+                </p>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-white/40 tracking-widest">URL DO WEBHOOK</label>
+                  <input
+                    type="url"
+                    value={settings["webhook_url"] || ""}
+                    onChange={(e) => set("webhook_url", e.target.value)}
+                    placeholder="https://hooks.zapier.com/hooks/catch/..."
+                    className="w-full bg-black border border-white/10 px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-violet-500 transition-colors"
+                  />
+                  <p className="text-xs text-white/30">Disparado via POST com todos os dados do lead quando um diagnóstico é submetido.</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-white/40 tracking-widest">CHAVE SECRETA DO WEBHOOK</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={settings["webhook_secret"] || ""}
+                      onChange={(e) => set("webhook_secret", e.target.value)}
+                      placeholder="Chave enviada no header Authorization"
+                      className="flex-1 bg-black border border-white/10 px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-violet-500 transition-colors font-mono"
+                    />
+                    {settings["webhook_secret"] && (
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard(settings["webhook_secret"], "webhook_secret")}
+                        className="px-4 py-3 text-xs font-mono border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-colors"
+                      >
+                        {copied === "webhook_secret" ? "✓" : "COPIAR"}
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-xs text-white/30">Enviada como <code className="text-violet-400">Authorization: Bearer &lt;chave&gt;</code> e <code className="text-violet-400">X-Webhook-Secret</code>.</p>
+                </div>
+
+                <div className="bg-black/40 border border-white/5 p-4 text-xs font-mono text-white/30">
+                  <p className="text-white/50 mb-2">PAYLOAD ENVIADO:</p>
+                  <pre className="text-violet-300/70 whitespace-pre-wrap">{`{
+  "event": "new_diagnostic",
+  "timestamp": "2025-01-01T00:00:00Z",
+  "data": {
+    "id": 42,
+    "name": "João Silva",
+    "role": "CEO",
+    "email": "joao@empresa.com",
+    "budget": "R$ 8.000 – R$ 20.000/mês",
+    "timeline": "Imediatamente",
+    "need": "...",
+    "segment": "Tech / SaaS",
+    "companySize": "6 a 20 pessoas",
+    "businessModel": "B2B",
+    "digitalMaturity": "Intermediário",
+    "mainChannel": "Google Ads / SEO",
+    "countryCode": "BR"
+  }
+}`}</pre>
+                </div>
+              </div>
+            </div>
+
+            <div className="border border-blue-500/20 bg-blue-500/5">
+              <div className="px-6 py-4 border-b border-blue-500/10">
+                <h2 className="font-bold text-sm text-blue-300">API Key</h2>
+                <p className="text-xs text-white/40 mt-1">
+                  Chave para integrar com sistemas externos ou proteger chamadas à API.
+                </p>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-mono text-white/40 tracking-widest">CHAVE DE API</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={settings["api_key"] || ""}
+                      onChange={(e) => set("api_key", e.target.value)}
+                      placeholder="nmk_..."
+                      className="flex-1 bg-black border border-white/10 px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-blue-500 transition-colors font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={generateApiKey}
+                      className="px-4 py-3 text-xs font-mono border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-colors"
+                    >
+                      GERAR
+                    </button>
+                    {settings["api_key"] && (
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard(settings["api_key"], "api_key")}
+                        className="px-4 py-3 text-xs font-mono border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-colors"
+                      >
+                        {copied === "api_key" ? "✓" : "COPIAR"}
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-xs text-white/30">Use o botão GERAR para criar uma chave segura automaticamente.</p>
+                </div>
+
+                <div className="bg-black/40 border border-white/5 p-4 space-y-2">
+                  <p className="text-xs font-mono text-white/50">ENDPOINT PÚBLICO:</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <code className="text-xs text-blue-300/70 break-all">POST /api/diagnostic</code>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <code className="text-xs text-blue-300/70 break-all">GET /api/geo-content/:code</code>
+                  </div>
+                  <p className="text-xs text-white/30 mt-2">Envie a API Key no header: <code className="text-blue-400">X-API-Key: &lt;sua-chave&gt;</code></p>
+                </div>
+              </div>
+            </div>
+
             <div className="border border-white/5 bg-white/2 p-6">
-              <h2 className="font-bold text-sm mb-2">Credenciais de Acesso</h2>
+              <h2 className="font-bold text-sm mb-2">Credenciais de Acesso ao CRM</h2>
               <p className="text-xs text-white/40 mb-4">As credenciais de login do CRM são configuradas diretamente no servidor por segurança.</p>
               <div className="space-y-2 text-sm">
                 <div className="flex gap-4">

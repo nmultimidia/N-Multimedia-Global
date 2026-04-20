@@ -13,6 +13,9 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   smtp_pass: "",
   agency_name: "N Multimídia",
   agency_tagline: "We don't sell marketing. We sell leverage.",
+  webhook_url: "",
+  webhook_secret: "",
+  api_key: "",
 };
 
 router.get("/", requireAuth, async (_req, res) => {

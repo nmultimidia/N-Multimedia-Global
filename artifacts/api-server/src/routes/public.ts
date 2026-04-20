@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db, diagnosticsTable, geoContentTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { sendDiagnosticEmail } from "../lib/email";
+import { fireWebhook } from "../lib/webhook";
 import { logger } from "../lib/logger";
 
 const router = Router();
@@ -21,6 +22,10 @@ router.post("/diagnostic", async (req, res) => {
 
   sendDiagnosticEmail({ name, role, email, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel }).catch((err) =>
     logger.error({ err }, "Failed to send diagnostic email")
+  );
+
+  fireWebhook({ id: row.id, name, role, email, budget, timeline, need, countryCode, segment, companySize, businessModel, digitalMaturity, mainChannel, createdAt: row.createdAt }).catch((err) =>
+    logger.error({ err }, "Failed to fire webhook")
   );
 
   res.json({ ok: true, id: row.id });
