@@ -58,41 +58,77 @@ export default function CRMDiagnosticDetail() {
           <button onClick={handleDelete} className="text-red-400/50 hover:text-red-400 text-sm font-mono transition-colors">ELIMINAR</button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          {[
-            { label: "E-MAIL", value: d.email },
-            { label: "PAÍS", value: d.countryCode?.toUpperCase() || "—" },
-            { label: "BUDGET", value: d.budget || "—" },
-            { label: "TIMELINE", value: d.timeline || "—" },
-            { label: "RECEBIDO EM", value: new Date(d.createdAt).toLocaleString("pt-BR") },
-          ].map((field) => (
-            <div key={field.label} className="border border-white/5 bg-white/2 p-5">
-              <p className="text-xs font-mono text-white/30 tracking-widest mb-2">{field.label}</p>
-              <p className="text-sm text-white">{field.value}</p>
-            </div>
-          ))}
-
-          <div className="border border-white/5 bg-white/2 p-5">
-            <p className="text-xs font-mono text-white/30 tracking-widest mb-2">STATUS</p>
-            <select
-              value={d.status}
-              onChange={(e) => handleStatusChange(e.target.value)}
-              disabled={saving}
-              className={`bg-transparent border-none text-sm font-bold focus:outline-none cursor-pointer ${STATUS_COLORS[d.status] || "text-white"}`}
-            >
-              {STATUS_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value} className="bg-black text-white">{o.label}</option>
+        <div className="space-y-8 mb-8">
+          <div>
+            <p className="text-xs font-mono text-violet-400/60 tracking-widest mb-4">CONTACTO</p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                { label: "E-MAIL", value: d.email },
+                { label: "PAÍS", value: d.countryCode?.toUpperCase() || "—" },
+                { label: "RECEBIDO EM", value: new Date(d.createdAt).toLocaleString("pt-BR") },
+              ].map((field) => (
+                <div key={field.label} className="border border-white/5 bg-white/2 p-5">
+                  <p className="text-xs font-mono text-white/30 tracking-widest mb-2">{field.label}</p>
+                  <p className="text-sm text-white">{field.value}</p>
+                </div>
               ))}
-            </select>
+              <div className="border border-white/5 bg-white/2 p-5">
+                <p className="text-xs font-mono text-white/30 tracking-widest mb-2">STATUS</p>
+                <select
+                  value={d.status}
+                  onChange={(e) => handleStatusChange(e.target.value)}
+                  disabled={saving}
+                  className={`bg-transparent border-none text-sm font-bold focus:outline-none cursor-pointer ${STATUS_COLORS[d.status] || "text-white"}`}
+                >
+                  {STATUS_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value} className="bg-black text-white">{o.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {d.need && (
-          <div className="border border-white/5 bg-white/2 p-6">
-            <p className="text-xs font-mono text-white/30 tracking-widest mb-3">NECESSIDADE PRINCIPAL</p>
-            <p className="text-sm text-white leading-relaxed">{d.need}</p>
+          <div>
+            <p className="text-xs font-mono text-violet-400/60 tracking-widest mb-4">BANT</p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                { label: "BUDGET", value: d.budget || "—" },
+                { label: "TIMELINE", value: d.timeline || "—" },
+              ].map((field) => (
+                <div key={field.label} className="border border-white/5 bg-white/2 p-5">
+                  <p className="text-xs font-mono text-white/30 tracking-widest mb-2">{field.label}</p>
+                  <p className="text-sm text-white">{field.value}</p>
+                </div>
+              ))}
+            </div>
+            {d.need && (
+              <div className="border border-white/5 bg-white/2 p-6 mt-4">
+                <p className="text-xs font-mono text-white/30 tracking-widest mb-3">NECESSIDADE PRINCIPAL</p>
+                <p className="text-sm text-white leading-relaxed">{d.need}</p>
+              </div>
+            )}
           </div>
-        )}
+
+          {(d.segment || d.companySize || d.businessModel || d.digitalMaturity || d.mainChannel) && (
+            <div>
+              <p className="text-xs font-mono text-violet-400/60 tracking-widest mb-4">ICP — IDEAL CUSTOMER PROFILE</p>
+              <div className="grid md:grid-cols-2 gap-4">
+                {[
+                  { label: "SEGMENTO", value: d.segment || "—" },
+                  { label: "TAMANHO DA EMPRESA", value: d.companySize || "—" },
+                  { label: "MODELO DE NEGÓCIO", value: d.businessModel || "—" },
+                  { label: "MATURIDADE DIGITAL", value: d.digitalMaturity || "—" },
+                  { label: "CANAL PRINCIPAL", value: d.mainChannel || "—" },
+                ].map((field) => (
+                  <div key={field.label} className="border border-white/5 bg-white/2 p-5">
+                    <p className="text-xs font-mono text-white/30 tracking-widest mb-2">{field.label}</p>
+                    <p className="text-sm text-white">{field.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </CRMLayout>
   );

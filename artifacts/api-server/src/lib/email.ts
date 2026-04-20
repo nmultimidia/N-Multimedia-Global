@@ -15,6 +15,11 @@ export async function sendDiagnosticEmail(diagnostic: {
   timeline?: string | null;
   need?: string | null;
   countryCode?: string | null;
+  segment?: string | null;
+  companySize?: string | null;
+  businessModel?: string | null;
+  digitalMaturity?: string | null;
+  mainChannel?: string | null;
 }) {
   const adminEmail = await getSetting("admin_email") || "gabrieltatai@nmultimidia.com";
   const smtpHost = await getSetting("smtp_host");
@@ -45,9 +50,16 @@ export async function sendDiagnosticEmail(diagnostic: {
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">NOME / CARGO</td><td style="padding:8px 0">${diagnostic.name}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">E-MAIL</td><td style="padding:8px 0">${diagnostic.email}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">PAÍS</td><td style="padding:8px 0">${diagnostic.countryCode?.toUpperCase() || '—'}</td></tr>
+          <tr><td colspan="2" style="padding:16px 0 4px;color:#7c3aed;font-size:11px;font-weight:bold;letter-spacing:2px">BANT</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">BUDGET</td><td style="padding:8px 0">${diagnostic.budget || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">TIMELINE</td><td style="padding:8px 0">${diagnostic.timeline || '—'}</td></tr>
           <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">NECESSIDADE</td><td style="padding:8px 0">${diagnostic.need || '—'}</td></tr>
+          <tr><td colspan="2" style="padding:16px 0 4px;color:#7c3aed;font-size:11px;font-weight:bold;letter-spacing:2px">ICP</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">SEGMENTO</td><td style="padding:8px 0">${diagnostic.segment || '—'}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">TAMANHO DA EMPRESA</td><td style="padding:8px 0">${diagnostic.companySize || '—'}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">MODELO DE NEGÓCIO</td><td style="padding:8px 0">${diagnostic.businessModel || '—'}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">MATURIDADE DIGITAL</td><td style="padding:8px 0">${diagnostic.digitalMaturity || '—'}</td></tr>
+          <tr><td style="padding:8px 0;color:#a1a1aa;font-size:12px">CANAL PRINCIPAL</td><td style="padding:8px 0">${diagnostic.mainChannel || '—'}</td></tr>
         </table>
         <p style="margin:24px 0 0;color:#52525b;font-size:12px">N Multimídia CRM — ${new Date().toLocaleString('pt-BR')}</p>
       </div>
