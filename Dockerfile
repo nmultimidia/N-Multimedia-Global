@@ -1,6 +1,6 @@
 ###############################################################################
 # N Multimídia — Dockerfile para Coolify
-# 
+#
 # Variáveis de ambiente obrigatórias em produção:
 #   DATABASE_URL   — PostgreSQL connection string
 #   JWT_SECRET     — Secret para tokens JWT do CRM
@@ -24,10 +24,10 @@ WORKDIR /app
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 
 # Copiar package.json de todos os pacotes do monorepo
-COPY lib/db/package.json             lib/db/
-COPY lib/api-zod/package.json        lib/api-zod/
+COPY lib/db/package.json               lib/db/
+COPY lib/api-zod/package.json          lib/api-zod/
 COPY lib/api-client-react/package.json lib/api-client-react/
-COPY lib/api-spec/package.json       lib/api-spec/
+COPY lib/api-spec/package.json         lib/api-spec/
 COPY artifacts/n-multimidia/package.json  artifacts/n-multimidia/
 COPY artifacts/api-server/package.json    artifacts/api-server/
 
@@ -37,7 +37,7 @@ RUN pnpm install --frozen-lockfile
 FROM base AS frontend-builder
 WORKDIR /app
 
-COPY --from=installer /app/node_modules                      ./node_modules
+COPY --from=installer /app/node_modules                        ./node_modules
 COPY --from=installer /app/artifacts/n-multimidia/node_modules ./artifacts/n-multimidia/node_modules
 
 COPY . .
@@ -52,8 +52,10 @@ RUN pnpm --filter @workspace/n-multimidia run build
 FROM base AS api-builder
 WORKDIR /app
 
-COPY --from=installer /app/node_modules                   ./node_modules
-COPY --from=installer /app/artifacts/api-server/node_modules ./artifacts/api-server/node_modules
+# FIX: node_modules raiz é necessário para resolver dependências dos pacotes
+# lib/* (drizzle-orm, pg, zod, etc.) que são hoistados pelo pnpm no monorepo
+COPY --from=installer /app/node_modules                        ./node_modules
+COPY --from=installer /app/artifacts/api-server/node_modules  ./artifacts/api-server/node_modules
 
 COPY . .
 
@@ -70,7 +72,7 @@ ENV NODE_ENV=production
 ENV PORT=8080
 ENV STATIC_DIR=/app/public
 
-# Dependências de runtime (apenas o necessário — nodemailer é externalizado)
+# Dependências de runtime (apenas o necessário)
 COPY --from=api-builder /deploy/node_modules ./node_modules
 
 # Bundle compilado da API
