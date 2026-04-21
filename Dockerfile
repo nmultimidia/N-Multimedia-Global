@@ -6,7 +6,7 @@
 #   JWT_SECRET     — Secret para tokens JWT do CRM
 #
 # Variáveis opcionais:
-#   PORT           — Porta do servidor (padrão: 8080)
+#   PORT           — Porta do servidor (padrão: 3000)
 #   SMTP_HOST / SMTP_PORT / SMTP_USER / SMTP_PASS — Envio de e-mails
 ###############################################################################
 
@@ -69,13 +69,14 @@ FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=8080
+ENV PORT=3000
+ENV HOST=0.0.0.0
 ENV STATIC_DIR=/app/public
 
 COPY --from=api-builder /deploy/node_modules ./node_modules
 COPY --from=api-builder /app/artifacts/api-server/dist ./dist
 COPY --from=frontend-builder /app/artifacts/n-multimidia/dist/public ./public
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["node", "--enable-source-maps", "./dist/index.mjs"]
