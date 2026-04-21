@@ -20,10 +20,8 @@ RUN corepack enable pnpm
 FROM base AS installer
 WORKDIR /app
 
-# Copiar manifestos do workspace (camada cacheável)
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 
-# Copiar package.json de todos os pacotes do monorepo
 COPY lib/db/package.json               lib/db/
 COPY lib/api-zod/package.json          lib/api-zod/
 COPY lib/api-client-react/package.json lib/api-client-react/
@@ -52,9 +50,16 @@ RUN pnpm --filter @workspace/n-multimidia run build
 FROM base AS api-builder
 WORKDIR /app
 
-# FIX: node_modules raiz é necessário para resolver dependências dos pacotes
-# lib/* (drizzle-orm, pg, zod, etc.) que são hoistados pelo pnpm no monorepo
-COPY --from=installer /app/node_modules                        ./node_modules
+# node_modules raiz (binários e pacotes hoistados)
+COPY --from=installer /app/node_modules                       ./node_modules
+
+# node_modules de cada pacote lib/* (onde drizzle-orm, pg, zod residem)
+COPY --from=installer /app/lib/db/node_modules                ./lib/db/node_modules
+COPY --from=installer /app/lib/api-zod/node_modules           ./lib/api-zod/node_modules
+COPY --from=installer /app/lib/api-spec/node_modules          ./lib/api-spec/node_modules
+COPY --from=installer /app/lib/api-client-react/node_modules  ./lib/api-client-react/node_modules
+
+# node_modules do próprio api-server
 COPY --from=installer /app/artifacts/api-server/node_modules  ./artifacts/api-server/node_modules
 
 COPY . .
@@ -72,13 +77,8 @@ ENV NODE_ENV=production
 ENV PORT=8080
 ENV STATIC_DIR=/app/public
 
-# Dependências de runtime (apenas o necessário)
 COPY --from=api-builder /deploy/node_modules ./node_modules
-
-# Bundle compilado da API
 COPY --from=api-builder /app/artifacts/api-server/dist ./dist
-
-# Ficheiros estáticos do frontend
 COPY --from=frontend-builder /app/artifacts/n-multimidia/dist/public ./public
 
 EXPOSE 8080
