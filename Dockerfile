@@ -70,6 +70,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=8080
+ENV HOST=0.0.0.0
 ENV STATIC_DIR=/app/public
 
 COPY --from=api-builder /deploy/node_modules ./node_modules
