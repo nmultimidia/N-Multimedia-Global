@@ -50,24 +50,19 @@ RUN pnpm --filter @workspace/n-multimidia run build
 FROM base AS api-builder
 WORKDIR /app
 
-# node_modules raiz (binários e pacotes hoistados)
 COPY --from=installer /app/node_modules                       ./node_modules
-
-# node_modules de cada pacote lib/* (onde drizzle-orm, pg, zod residem)
 COPY --from=installer /app/lib/db/node_modules                ./lib/db/node_modules
 COPY --from=installer /app/lib/api-zod/node_modules           ./lib/api-zod/node_modules
 COPY --from=installer /app/lib/api-spec/node_modules          ./lib/api-spec/node_modules
 COPY --from=installer /app/lib/api-client-react/node_modules  ./lib/api-client-react/node_modules
-
-# node_modules do próprio api-server
 COPY --from=installer /app/artifacts/api-server/node_modules  ./artifacts/api-server/node_modules
 
 COPY . .
 
 RUN pnpm --filter @workspace/api-server run build
 
-# Gerar pacote de produção com apenas as dependências necessárias em runtime
-RUN pnpm --filter @workspace/api-server deploy --prod /deploy
+# FIX: pnpm v10 requer --legacy para deploy sem inject-workspace-packages
+RUN pnpm --filter @workspace/api-server deploy --prod --legacy /deploy
 
 # ── Imagem de produção ────────────────────────────────────────────────────────
 FROM node:22-alpine AS runner
